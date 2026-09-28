@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESL 3-Phase Speaking Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #4a69bd;
+      --primary-dark: #1e3799;
+      --secondary: #fa983a;
+      --secondary-dark: #e55039;
+      --accent: #78e08f;
+      --accent-dark: #38ada9;
+      --bg-color: #f4f6f8;
+      --card-bg: #ffffff;
+      --text-main: #2f3640;
+      --text-light: #718093;
+      --font-header: 'Poppins', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 2rem 1rem;
+      background-color: var(--bg-color);
+      background-image: radial-gradient(#dcdde1 2px, transparent 2px);
+      background-size: 30px 30px;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .level-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+
+    .level-tab {
+      background: #ced6e0;
+      color: #2f3640;
+      font-family: var(--font-header);
+      font-size: 1.2rem;
+      font-weight: 800;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      box-shadow: 0 4px 0 #a4b0be;
+    }
+
+    .level-tab.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 0 var(--primary-dark);
+    }
+
+    .header { text-align: center; margin-bottom: 10px; }
+
+    .level-badge {
+      display: inline-block;
+      background: var(--secondary);
+      color: white;
+      font-family: var(--font-header);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 0 var(--secondary-dark);
+    }
+
+    h1 {
+      font-family: var(--font-header);
+      font-size: 3.5rem;
+      margin: 0;
+      color: var(--primary);
+      text-transform: uppercase;
+      text-shadow: 3px 3px 0px rgba(74, 105, 189, 0.2);
+    }
+
+    .grid-container {
+      background: var(--card-bg);
+      border: 5px solid var(--primary);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .box-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 12px;
+    }
+
+    .number-box {
+      background: var(--secondary);
+      color: white;
+      font-family: var(--font-header);
+      font-size: 1.8rem;
+      font-weight: 800;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 65px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 6px 0 var(--secondary-dark);
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .number-box.picked {
+      background: #bdc3c7;
+      color: #ecf0f1;
+      box-shadow: 0 0 0 transparent;
+      transform: translateY(6px);
+      cursor: not-allowed;
+    }
+
+    .result-area {
+      background: var(--card-bg);
+      border: none;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .hidden { display: none !important; }
+
+    .phase-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 4px solid #f1f2f6;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    .phase-title {
+      font-family: var(--font-header);
+      color: var(--primary-dark);
+      font-size: 2rem;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .phase-indicator {
+      background: var(--accent-dark);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+      background: #f0f4ff;
+      padding: 20px;
+      border-radius: 15px;
+      justify-content: center;
+      border: 2px dashed var(--primary);
+      min-height: 80px; 
+    }
+
+    .word-badge {
+      background: white;
+      color: var(--primary-dark);
+      font-size: 1.4rem;
+      font-family: var(--font-header);
+      padding: 8px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      border: 2px solid var(--primary);
+      cursor: grab;
+      user-select: none;
+      transition: transform 0.1s;
+    }
+
+    .word-badge:active {
+      cursor: grabbing;
+    }
+
+    .word-badge.dragging {
+      opacity: 0.5;
+      transform: scale(0.95);
+    }
+
+    .sentence-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sentence-item {
+      font-size: 1.5rem;
+      line-height: 1.6;
+      padding-left: 20px;
+      border-left: 5px solid var(--secondary);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .sentence-item strong {
+      margin-right: 10px;
+    }
+
+    .drop-zone {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 140px;
+      height: 45px;
+      border-bottom: 3px solid var(--primary);
+      margin: 0 10px;
+      background-color: #f4f6f8;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .drop-zone.over {
+      background-color: rgba(120, 224, 143, 0.2);
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .drop-zone .word-badge {
+      margin: 0;
+      font-size: 1.2rem;
+      padding: 4px 15px;
+      box-shadow: none;
+    }
+
+    .reading-passage {
+      background: #fff9c4;
+      padding: 30px;
+      border-radius: 15px;
+      font-size: 1.6rem;
+      line-height: 1.8;
+      color: #2c3e50;
+      border-left: 8px solid #f1c40f;
+    }
+
+    .formula-box, .guidelines, .answer-box { margin-top: 25px; }
+    .formula-box { background-color: #f0f4ff; border-left: 6px solid var(--primary); padding: 25px; border-radius: 0 16px 16px 0; }
+    .formula-text { font-size: 1.6rem; line-height: 1.6; }
+    .formula-text strong { background: rgba(74, 105, 189, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px dashed var(--primary); }
+    .guidelines li { margin-bottom: 20px; padding-left: 45px; position: relative; color: var(--primary-dark); font-size: 1.6rem; font-weight: 700; }
+    .guidelines li::before { content: "👉"; position: absolute; left: 0; font-size: 1.8rem; top: -2px; }
+    
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .btn-group button {
+      flex: 1;
+      margin-top: 0;
+    }
+
+    .answer-btn, .nav-btn, .spin-btn {
+      font-size: 1.5rem;
+      padding: 15px 30px;
+      font-family: var(--font-header);
+      font-weight: 800;
+      border-radius: 16px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s ease;
+      width: 100%;
+    }
+
+    .answer-btn {
+      background: var(--accent);
+      box-shadow: 0 6px 0 var(--accent-dark);
+      color: #1e3799;
+    }
+    .answer-btn:hover { transform: translateY(2px); box-shadow: 0 4px 0 var(--accent-dark); }
+    
+    .spin-btn {
+      background: var(--secondary);
+      box-shadow: 0 6px 0 var(--secondary-dark);
+      color: white;
+    }
+    .spin-btn:hover { transform: translateY(2px); box-shadow: 0 4px 0 var(--secondary-dark); }
+
+    .nav-btn { background: var(--primary); color: white; box-shadow: 0 6px 0 var(--primary-dark); margin-top: 20px; }
+    .nav-btn:hover { background: var(--primary-dark); box-shadow: 0 4px 0 #0c2461; }
+
+    .answer-box {
+      padding: 35px 30px; background: #fff9c4; border-left: 8px solid #f1c40f; 
+      font-size: 1.6rem; font-weight: 500; border-radius: 0 16px 16px 0; position: relative;
+    }
+    .answer-box::before { content: "SAMPLE ANSWER"; position: absolute; top: -16px; left: 20px; background: #f1c40f; font-family: var(--font-header); font-size: 1.1rem; padding: 6px 16px; border-radius: 20px; font-weight: 800; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <div class="level-controls">
+      <button class="level-tab active" id="btn-basic">Basic Level</button>
+      <button class="level-tab" id="btn-inter">Intermediate Level</button>
+    </div>
+
+    <div class="header">
+      <div class="level-badge" id="badge-display">Level 1: Beginner</div>
+      <h1 id="main-title">Comprehensive Test</h1>
+    </div>
+    
+    <div class="grid-container">
+      <div class="box-grid" id="box-grid"></div>
+    </div>
+
+    <div class="result-area hidden" id="result-area">
+      
+      <div class="phase-header">
+        <h2 class="phase-title" id="phase-title">Phase 1: Vocabulary</h2>
+        <div class="phase-indicator" id="phase-indicator">1 / 3</div>
+      </div>
+
+      <!-- Phase 1: Vocabulary -->
+      <div id="phase-1-content" class="phase-content">
+        <div class="word-bank" id="word-bank"></div>
+        <div class="sentence-list" id="sentence-list"></div>
+      </div>
+
+      <!-- Phase 2: Reading -->
+      <div id="phase-2-content" class="phase-content hidden">
+        <div class="reading-passage" id="reading-passage"></div>
+      </div>
+
+      <!-- Phase 3: Speaking -->
+      <div id="phase-3-content" class="phase-content hidden">
+        <h3 style="font-family: var(--font-header); color: var(--text-light); margin-top:0;" id="scenario-topic">Topic</h3>
+        <h2 style="font-family: var(--font-header); font-size: 2rem; margin-top: 10px;" id="scenario-situation">Situation</h2>
+        
+        <div class="formula-box hidden" id="formula-container">
+          <h3 style="margin-top:0; color:var(--primary-dark);">👉 Sentence Formula</h3>
+          <div class="formula-text" id="formula-text"></div>
+        </div>
+        
+        <div class="guidelines hidden" id="guidelines-container">
+          <h3 style="color:var(--text-light); font-family:var(--font-header);">Guidelines</h3>
+          <ul id="guidelines-list"></ul>
+        </div>
+
+        <div class="btn-group">
+          <button class="spin-btn" id="spin-btn">🎲 SPIN AGAIN</button>
+          <button class="answer-btn" id="answer-btn">SHOW SAMPLE ANSWER</button>
+        </div>
+        
+        <div class="answer-box hidden" id="answer-box"></div>
+      </div>
+
+      <button class="nav-btn" id="next-phase-btn">NEXT PHASE</button>
+    </div>
+  </div>
+
+  <script>
+    let vocabDB = [
+      { word: "intelligence", sentence: "Her _____ helped her solve the difficult puzzle." },
+      { word: "creativity", sentence: "Art class encourages _____." },
+      { word: "tutor", sentence: "My _____ helps me with math." },
+      { word: "repeated", sentence: "He _____ the question slowly." },
+      { word: "privacy", sentence: "Everyone needs some _____." },
+      { word: "replacement", sentence: "We need a _____ for the broken chair." },
+      { word: "responsibly", sentence: "Please use the computer _____. Don't watch Netflix all the time." },
+      { word: "human", sentence: "Every _____ needs clean water." },
+      { word: "imagination", sentence: "Use your _____ to write a story." },
+      { word: "judgment", sentence: "Use good _____ before deciding." },
+      { word: "unfair", sentence: "The rule seems _____." },
+      { word: "private", sentence: "This is a _____ conversation." },
+      { word: "creatures", sentence: "Many sea _____ live here." },
+      { word: "beyond", sentence: "The village lies _____ the hill." },
+      { word: "mission", sentence: "The team completed its _____." },
+      { word: "rusty", sentence: "The old bike is _____." },
+      { word: "minerals", sentence: "Milk contains important _____." },
+      { word: "curious", sentence: "The child was _____ about space." },
+      { word: "opportunity", sentence: "This job is a great _____." },
+      { word: "curiosity", sentence: "His _____ led him to explore." },
+      { word: "perseverance", sentence: "Success requires _____." },
+      { word: "harmful", sentence: "Too much smoke is _____." },
+      { word: "radiation", sentence: "Sunscreen protects us from _____." },
+      { word: "patience", sentence: "Learning a language takes _____." },
+      { word: "compete", sentence: "Our teams _____ every year." },
+      { word: "champion", sentence: "He became the national _____." },
+      { word: "globe", sentence: "The map covers the whole _____." },
+      { word: "cheer", sentence: "Fans _____ for their team." },
+      { word: "athlete", sentence: "The _____ trains every morning." },
+      { word: "tournament", sentence: "Our school held a chess _____." },
+      { word: "stage", sentence: "The singer walked onto the _____." },
+      { word: "tie", sentence: "The game ended in a _____." },
+      { word: "elimination", sentence: "One loss means _____ from the NBA playoffs." },
+      { word: "round", sentence: "She won the first _____." },
+      { word: "grand", sentence: "They stayed in a _____ hotel." },
+      { word: "beat", sentence: "Our team _____ the champions." },
+      { word: "hero", sentence: "The firefighter was a _____." },
+      { word: "career", sentence: "She wants a _____ in medicine." },
+      { word: "club", sentence: "I joined the science _____." },
+      { word: "leading", sentence: "She is a _____ scientist." },
+      { word: "fame", sentence: "The singer gained a lot of _____." },
+      { word: "commercial", sentence: "I saw a funny TV _____." },
+      { word: "herbal", sentence: "She drinks _____ tea." },
+      { word: "brand", sentence: "This _____ makes good shoes." },
+      { word: "recognize", sentence: "I did not _____ him at first." },
+      { word: "upset", sentence: "The news made him _____." },
+      { word: "previous", sentence: "I met her the _____ week." },
+      { word: "draw", sentence: "I like to _____ animals." },
+      { word: "tale", sentence: "Grandpa told us a funny _____." },
+      { word: "skill", sentence: "Cooking is a useful _____." },
+      { word: "talent", sentence: "He has a _____ for music." },
+      { word: "expected / expect", sentence: "I _____ the bus at noon." },
+      { word: "dirty", sentence: "My shoes are _____." },
+      { word: "unfair", sentence: "That punishment seems _____." },
+      { word: "attack", sentence: "The dog may _____ strangers." },
+      { word: "matter", sentence: "This is a serious _____." },
+      { word: "cheat", sentence: "Do not _____ on the test." },
+      { word: "spectator", sentence: "Every _____ watched quietly." },
+      { word: "passion", sentence: "Music is her _____." },
+      { word: "drama", sentence: "We watched a school _____." },
+      { word: "underdog", sentence: "Everyone supported the _____." },
+      { word: "universal", sentence: "Music is a _____ language." },
+      { word: "athlete", sentence: "An _____ must stay healthy." },
+      { word: "cricket", sentence: "They play _____ after school." },
+      { word: "landscape", sentence: "The mountain _____ is beautiful." },
+      { word: "dominate", sentence: "One team may _____ the league." },
+      { word: "emerging", sentence: "This is an _____ technology." },
+      { word: "Humorous", sentence: "His speech was _____." },
+      { word: "hurdles", sentence: "The runner jumped over the _____." },
+      { word: "permanent", sentence: "The mark is _____." },
+      { word: "describe", sentence: "Please _____ your hometown." },
+      { word: "consumption", sentence: "We should reduce energy _____." },
+      { word: "absurd", sentence: "That idea sounds _____." },
+      { word: "chaotic", sentence: "The classroom became _____." },
+      { word: "Charisma", sentence: "The actor has great _____." },
+      { word: "modern", sentence: "They live in a _____ apartment." },
+      { word: "trivial", sentence: "Do not argue about _____ things." },
+      { word: "doomscrolling", sentence: "She stopped _____ before bed." },
+      { word: "craves", sentence: "He _____ chocolate after dinner." },
+      { word: "dopamine", sentence: "The brain releases _____." },
+      { word: "addictive loop", sentence: "The app can create an _____." },
+      { word: "concenerned about", sentence: "I am _____ my health." },
+      { word: "cognitive", sentence: "Sleep supports _____ health." },
+      { word: "overexposure", sentence: "_____ to sunlight can harm skin." },
+      { word: "decline", sentence: "Sales began to _____." },
+      { word: "overstimulation", sentence: "Loud noise can cause _____." },
+      { word: "impulse control", sentence: "Games can test your _____." },
+      { word: "fatigue", sentence: "Long hours caused _____." },
+      { word: "anxiety", sentence: "Tests can cause _____." },
+      { word: "depression", sentence: "Support is important during _____." },
+      { word: "adaptable", sentence: "Good workers are _____." },
+      { word: "symbolize", sentence: "Doves often _____ peace." },
+      { word: "temples", sentence: "We visited old _____." },
+      { word: "shrines", sentence: "Tourists visited the mountain _____." },
+      { word: "fortune", sentence: "He made a _____ in business." },
+      { word: "desires", sentence: "Everyone has different _____." },
+      { word: "purifies", sentence: "This filter _____ the water." },
+      { word: "special", sentence: "Today is a _____ day." },
+      { word: "banish", sentence: "She hoped to _____ her fear." },
+      { word: "reputation", sentence: "The restaurant has a good _____." },
+      { word: "customary", sentence: "Gifts are _____ at this event." },
+      { word: "gather", sentence: "Families _____ for dinner." },
+      { word: "celebration", sentence: "We held a birthday _____." },
+      { word: "ceremony", sentence: "The wedding _____ was short." }
+    ];
+
+    const readingDB = {
+      basic: [
+        "My name is Sarah. I live in a big city with my family. Every morning, I wake up at 7:00 AM and eat toast for breakfast. After breakfast, I take the bus to school. My favorite subject is English because I like learning new words. On weekends, I usually go to the park with my friends and we play soccer.",
+        "Tom has a pet dog named Max. Max is very energetic and loves to run outside. Yesterday, Tom threw a ball, and Max ran very fast to catch it. They played in the garden for two hours. When they went back inside, Max was very tired and fell asleep on the rug.",
+        "Taiwan is a beautiful island. It is famous for its night markets and delicious street food. Many tourists visit Taipei 101, which used to be the tallest building in the world. The weather is usually warm, but it rains a lot during the summer.",
+        "Every Sunday, my family goes to the local market. We buy fresh vegetables, fruits, and fish. After shopping, we have lunch at a small restaurant nearby. I love spending time with my family and trying new foods.",
+        "Last summer, I went to the beach with my friends. We built sandcastles and swam in the sea. The water was cool and refreshing. In the evening, we watched the sunset and took many photos. It was a fun and memorable day.",
+        "I enjoy reading books in my free time. My favorite genre is mystery because I like solving puzzles. Last week, I finished a book about a detective who solved a big case. I was very excited to find out who the culprit was at the end.",
+        "My school has a big library with many books. I often go there to study and read. The library is quiet, and it has comfortable chairs. I like to borrow books about science and history. It helps me learn new things and improve my knowledge.",
+        "In the morning, I usually have cereal and milk for breakfast. After that, I brush my teeth and get dressed for school. I pack my bag with books and lunch. Then, I walk to the bus stop and wait for the bus to take me to school.",
+        "During the holidays, I like to visit my grandparents. They live in a small village. I help them in the garden and listen to their stories. They tell me about their childhood and how life was different back then. I enjoy spending time with them and learning from their experiences."
+      ],
+      intermediate: [
+        "In recent years, remote work has become a significant trend around the globe. Many companies have realized that employees can be just as productive working from home as they are in a traditional office. While this offers greater flexibility and eliminates long commutes, some workers struggle with feelings of isolation and the blurring of boundaries between their professional and personal lives.",
+        "The rapid advancement of artificial intelligence is reshaping multiple industries. From healthcare, where AI assists in diagnosing diseases, to transportation with the development of self-driving cars, the applications are vast. However, this technological leap also raises ethical concerns regarding data privacy and the potential displacement of human jobs.",
+        "Environmental conservation is more critical now than ever before. With global temperatures rising and extreme weather events becoming more frequent, nations must collaborate to reduce carbon emissions. Transitioning to renewable energy sources, such as solar and wind power, alongside sustainable agricultural practices, are essential steps toward securing a livable planet for future generations.",
+        "The importance of mental health awareness has gained recognition in recent years. Societal pressures, economic challenges, and the fast-paced nature of modern life contribute to stress and anxiety. Promoting open conversations about mental well-being, providing access to counseling services, and implementing workplace wellness programs are crucial for fostering a supportive environment.",
+        "The Tortoise and the Hare: A boastful hare repeatedly mocks a slow-moving tortoise, who eventually challenges him to a race. Supremely confident in his natural speed, the hare sprints ahead and decides to take a nap midway through the course, only to wake up and discover that the tortoise's relentless, plodding pace has crossed the finish line first. The story teaches that slow and steady consistency ultimately triumphs over erratic arrogance.",
+        "The Boy Who Cried Wolf: A bored shepherd boy entertains himself by falsely screaming that a wolf is attacking his flock, sending the panicked villagers rushing to his aid. After repeating this trick multiple times, a real wolf finally appears, but the villagers ignore the boy's desperate cries, assuming it is just another prank. The tragic outcome proves that liars are not believed, even when they finally tell the truth.",
+        "The Lion and the Mouse: A mighty lion catches a tiny mouse but decides to spare its life when the small creature promises to one day repay the favor. Later, the lion becomes severely entangled in a hunter's net, and the grateful mouse hears his roars, scampering over to gnaw through the thick ropes and set the beast free. This proves that no act of kindness is ever wasted and that even the smallest individuals can aid the strong.",
+        "The Ant and the Grasshopper: Throughout the warm summer months, an industrious ant works tirelessly to gather and store food while a carefree grasshopper simply sings and mocks the ant's relentless labor. When the freezing, harsh winter arrives, the starving grasshopper begs for help, only to find the ant safe and well-fed in its shelter. The fable serves as a stark reminder to work today to prepare for the inevitable needs of tomorrow.",
+        "The Fox and the Grapes: A hungry fox spots a cluster of plump, juicy grapes hanging high on a vine and leaps repeatedly to snatch them. After exhausting himself and failing to reach the prize, he walks away in disgust, loudly declaring that the grapes were probably sour anyway. This illustrates the human psychological tendency to easily despise and belittle what we cannot attain.",
+        "The Goose That Laid the Golden Eggs: A poor farmer discovers that his goose lays a single, solid gold egg every day, a miracle that steadily makes him wealthy. Consumed by greed and impatience, he decides to cut the bird open to extract all the gold at once, only to find it completely empty inside like any normal goose. He learns the hard way that blind greed ultimately destroys the very source of one's prosperity.",
+        "The Town Mouse and the Country Mouse: A town mouse visits his rural cousin and scoffs at the simple, rustic food, inviting him back to the city to experience true culinary luxury. While feasting on a lavish urban banquet, they are repeatedly terrified and nearly killed by a vicious cat and snapping dogs. The country mouse quickly packs up and returns home, realizing that a simple life in peace is vastly superior to a luxurious life lived in constant fear.",
+        "The Crow and the Pitcher: A desperate, thirsty crow finds a pitcher with a little water at the bottom, but its beak is too short to reach the liquid. Instead of giving up and dying of thirst, the clever bird begins dropping pebbles into the pitcher one by one, slowly raising the water level until it can finally take a drink. This demonstrates that creative thinking and steadfast persistence can solve seemingly impossible problems.",
+        "The Wolf in Sheep's Clothing: To feast on a flock of sheep without alerting the watchful shepherd, a cunning wolf drapes himself in a discarded sheep's fleece and slips seamlessly into the pasture. His disguise works too well; when the shepherd goes out that evening to blindly slaughter a sheep for his own dinner, he grabs and kills the disguised wolf instead. The fable warns that deception and deceit often bring about one's own ruin.",
+        "The North Wind and the Sun: The North Wind and the Sun argue over who is the most powerful, agreeing to a contest to see who can force a passing traveler to remove his heavy coat. The Wind blows fiercely, but the freezing traveler only wraps his coat tighter around himself in defense; the Sun then shines with a gentle, radiating heat, causing the traveler to voluntarily take off his coat to cool down. The story reveals that gentle persuasion is often far more effective than brute force."
+      ]
+    };
+
+    const speakingDB = {
+      basic: [
+        { 
+          name: "Introductions & Personal Info", 
+          scenarios: [ 
+            { situation: "Can you introduce yourself?", template: "My name is <strong>[name]</strong>. I am <strong>[age]</strong> years old, and I am from <strong>[hometown]</strong>.", answer: "My name is Kevin. I am 15 years old, and I am from Taichung." },
+            { situation: "What do you do?", template: "I am a <strong>[job/student]</strong> at <strong>[place]</strong>. I study/work hard every day.", answer: "I am a student at City High School. I study hard every day." },
+            { situation: "Where do you live now?", template: "I live in <strong>[city/neighborhood]</strong>. It is a <strong>[adjective]</strong> place to live.", answer: "I live in Xinyi District. It is a very busy and fun place to live." },
+            { situation: "What languages do you speak?", template: "I speak <strong>[language]</strong> and a little bit of <strong>[language]</strong>. I am learning English now.", answer: "I speak Mandarin and a little bit of Japanese. I am learning English now." }
+          ] 
+        },
+        { 
+          name: "Family", 
+          scenarios: [ 
+            { situation: "Describe your mom or dad.", template: "My <strong>[mom/dad]</strong> is very <strong>[adjective]</strong>. <strong>[He/She]</strong> likes to <strong>[hobby]</strong>.", answer: "My mom is very kind. She likes to cook delicious food for us." },
+            { situation: "Do you have any siblings?", template: "I have <strong>[number]</strong> <strong>[brother/sister]</strong>. We like to <strong>[activity]</strong> together.", answer: "I have one older brother. We like to play video games together." },
+            { situation: "Who do you live with?", template: "I live with my <strong>[family members]</strong>. Our house is <strong>[adjective]</strong> and comfortable.", answer: "I live with my parents and my grandmother. Our house is small but comfortable." },
+            { situation: "Do you have any pets?", template: "I have a <strong>[pet]</strong> named <strong>[name]</strong>. It is very <strong>[adjective]</strong>.", answer: "I have a dog named Lucky. It is very energetic and cute." }
+          ] 
+        },
+        { 
+          name: "Daily Routine", 
+          scenarios: [ 
+            { situation: "What time do you wake up?", template: "I wake up at <strong>[time]</strong>. The first thing I do is <strong>[action]</strong>.", answer: "I wake up at 7 a.m. The first thing I do is wash my face." },
+            { situation: "What is your morning schedule?", template: "After I wake up, I eat <strong>[food]</strong>. Then I go to <strong>[school/work]</strong> at <strong>[time]</strong>.", answer: "After I wake up, I eat eggs and toast. Then I go to school at 7:30 a.m." },
+            { situation: "What do you do in the evening?", template: "In the evening, I <strong>[action]</strong>. After that, I usually <strong>[action]</strong> before going to sleep.", answer: "In the evening, I do my homework. After that, I usually watch YouTube before going to sleep." },
+            { situation: "What do you do on weekends?", template: "On weekends, I don't wake up early. I usually <strong>[activity]</strong> and relax.", answer: "On weekends, I don't wake up early. I usually play basketball with friends and relax." }
+          ] 
+        },
+        { 
+          name: "Food & Drinks", 
+          scenarios: [ 
+            { situation: "What is your favorite meal?", template: "My favorite meal is <strong>[food]</strong>. I like it because it is <strong>[adjective]</strong>.", answer: "My favorite meal is beef noodles. I like it because it is spicy and warm." },
+            { situation: "What do you usually eat for breakfast?", template: "For breakfast, I usually eat <strong>[food]</strong> and drink <strong>[drink]</strong>.", answer: "For breakfast, I usually eat a sandwich and drink milk tea." },
+            { situation: "What is your favorite fruit?", template: "I love <strong>[fruit]</strong>. It is very <strong>[adjective - e.g., sweet/sour]</strong> and healthy.", answer: "I love watermelon. It is very sweet and refreshing in the summer." },
+            { situation: "Is there any food you don't like?", template: "I don't like <strong>[food]</strong>. I think the taste is too <strong>[adjective]</strong>.", answer: "I don't like bitter melon. I think the taste is too bitter for me." }
+          ] 
+        },
+        { 
+          name: "Hobbies & Likes/Dislikes", 
+          scenarios: [ 
+            { situation: "What sports do you like?", template: "I like <strong>[sport]</strong>. I play it with my <strong>[who]</strong>.", answer: "I like basketball. I play it with my classmates after school." },
+            { situation: "What don't you like doing?", template: "I don't like <strong>[activity]</strong>. I think it is <strong>[adjective]</strong>.", answer: "I don't like running. I think it is too tiring." },
+            { situation: "What do you like to do at home?", template: "When I am at home, I like to <strong>[hobby]</strong>. It helps me <strong>[reason]</strong>.", answer: "When I am at home, I like to read comic books. It helps me relax." },
+            { situation: "Do you like playing games?", template: "Yes, I really like playing <strong>[type of game]</strong>. My favorite game is <strong>[game name]</strong>.", answer: "Yes, I really like playing mobile games. My favorite game is Candy Crush." }
+          ] 
+        },
+        { 
+          name: "Weather & Seasons", 
+          scenarios: [ 
+            { situation: "What is the weather like today?", template: "Today, the weather is <strong>[weather]</strong>. It is a good day to <strong>[activity]</strong>.", answer: "Today, the weather is sunny and warm. It is a good day to go to the park." },
+            { situation: "What is your favorite season?", template: "My favorite season is <strong>[season]</strong> because the weather is <strong>[adjective]</strong>.", answer: "My favorite season is winter because the weather is cool and not too hot." },
+            { situation: "What do you do on a rainy day?", template: "When it rains, I stay inside and <strong>[activity]</strong>. I also like to <strong>[activity]</strong>.", answer: "When it rains, I stay inside and watch movies. I also like to sleep late." },
+            { situation: "Do you like hot weather?", template: "<strong>[Yes/No]</strong>, I <strong>[do/don't]</strong> like hot weather because <strong>[reason]</strong>.", answer: "No, I don't like hot weather because I sweat a lot and feel uncomfortable." }
+          ] 
+        },
+        { 
+          name: "Travel", 
+          scenarios: [ 
+            { situation: "Where have you traveled before?", template: "I have been to <strong>[place]</strong>. I traveled there by <strong>[transportation]</strong>.", answer: "I have been to Japan. I traveled there by airplane." },
+            { situation: "Where do you want to go next?", template: "I want to visit <strong>[place]</strong> because I want to see <strong>[thing]</strong>.", answer: "I want to visit London because I want to see Big Ben." },
+            { situation: "Do you like traveling by train or by bus?", template: "I prefer traveling by <strong>[transportation]</strong> because it is more <strong>[adjective]</strong>.", answer: "I prefer traveling by train because it is more comfortable and fast." },
+            { situation: "Tell me about a weekend trip.", template: "Last weekend, I went to <strong>[place]</strong> with my <strong>[who]</strong>. We had a lot of fun.", answer: "Last weekend, I went to the beach with my family. We had a lot of fun." }
+          ] 
+        },
+        { 
+          name: "Shopping", 
+          scenarios: [ 
+            { situation: "What is your favorite store?", template: "My favorite store is <strong>[store name]</strong> because they sell beautiful <strong>[items]</strong>.", answer: "My favorite store is Uniqlo because they sell comfortable clothes." },
+            { situation: "Do you like going to the supermarket?", template: "Yes, I like buying <strong>[item]</strong> and <strong>[item]</strong> at the supermarket.", answer: "Yes, I like buying snacks and fresh fruit at the supermarket." },
+            { situation: "How often do you go shopping?", template: "I go shopping <strong>[how often]</strong>. I usually go with my <strong>[who]</strong>.", answer: "I go shopping once a month. I usually go with my mom." },
+            { situation: "Do you shop online?", template: "Yes, I often buy <strong>[items]</strong> online because it is <strong>[adjective]</strong>.", answer: "Yes, I often buy phone cases online because it is very convenient." }
+          ] 
+        },
+        { 
+          name: "Food & Recipes", 
+          scenarios: [ 
+            { situation: "What is a famous food from your country?", template: "A famous food here is <strong>[food]</strong>. It is made with <strong>[ingredients]</strong>.", answer: "A famous food here is bubble tea. It is made with black tea, milk, and tapioca pearls." },
+            { situation: "Do you know how to cook?", template: "I can cook <strong>[food]</strong>. First, I <strong>[action]</strong>, then I <strong>[action]</strong>.", answer: "I can cook instant noodles. First, I boil water, then I add the noodles and an egg." },
+            { situation: "Who cooks in your family?", template: "My <strong>[family member]</strong> usually cooks. <strong>[His/Her]</strong> best dish is <strong>[food]</strong>.", answer: "My dad usually cooks. His best dish is fried rice." },
+            { situation: "Do you prefer eating at home or at a restaurant?", template: "I prefer eating at <strong>[place]</strong> because the food is <strong>[adjective]</strong>.", answer: "I prefer eating at a restaurant because the food is very delicious and special." }
+          ] 
+        },
+        { 
+          name: "Holidays & Traditions", 
+          scenarios: [ 
+            { situation: "What is your favorite holiday?", template: "My favorite holiday is <strong>[holiday]</strong>. We usually <strong>[activity]</strong>.", answer: "My favorite holiday is the Lunar New Year. We usually get red envelopes." },
+            { situation: "How do you celebrate your birthday?", template: "On my birthday, I eat <strong>[food]</strong> and my friends give me <strong>[item]</strong>.", answer: "On my birthday, I eat a big cake and my friends give me presents." },
+            { situation: "What did you do last New Year's Eve?", template: "Last New Year's Eve, I went to <strong>[place]</strong> to see the <strong>[event]</strong>.", answer: "Last New Year's Eve, I went to Taipei 101 to see the fireworks." },
+            { situation: "Is there a special tradition in your family?", template: "Yes, every <strong>[holiday/day]</strong>, my family always <strong>[activity]</strong> together.", answer: "Yes, every Moon Festival, my family always has a barbecue together." }
+          ] 
+        },
+        { 
+          name: "School or Work", 
+          scenarios: [ 
+            { situation: "What is your favorite class?", template: "My favorite class is <strong>[subject]</strong> because it is very <strong>[adjective]</strong>.", answer: "My favorite class is P.E. because it is very active and fun." },
+            { situation: "Describe your teacher or boss.", template: "My <strong>[teacher/boss]</strong> is very <strong>[adjective]</strong>. <strong>[He/She]</strong> always helps me when I have questions.", answer: "My math teacher is very patient. He always helps me when I have questions." },
+            { situation: "What do you do during break time?", template: "During break time, I <strong>[activity]</strong> and talk to my <strong>[who]</strong>.", answer: "During break time, I drink water and talk to my classmates." },
+            { situation: "How do you go to school/work?", template: "I go to school/work by <strong>[transportation]</strong>. It takes about <strong>[time]</strong>.", answer: "I go to school by bus. It takes about 20 minutes." }
+          ] 
+        },
+        { 
+          name: "Hobbies & Free Time", 
+          scenarios: [ 
+            { situation: "Do you play any musical instruments?", template: "Yes, I play the <strong>[instrument]</strong>. I practice <strong>[how often]</strong>.", answer: "Yes, I play the piano. I practice every Wednesday." },
+            { situation: "Do you like drawing or painting?", template: "I like <strong>[drawing/painting]</strong>. I usually draw <strong>[thing]</strong>.", answer: "I like drawing. I usually draw anime characters." },
+            { situation: "What do you do to relax?", template: "To relax, I usually listen to <strong>[type of music]</strong> or <strong>[activity]</strong>.", answer: "To relax, I usually listen to pop music or take a hot shower." },
+            { situation: "Do you collect anything?", template: "Yes, I collect <strong>[items]</strong>. I have about <strong>[number]</strong> of them.", answer: "Yes, I collect stickers. I have about 100 of them in a book." }
+          ] 
+        }
+      ],
+     intermediate:[
+        { 
+          name: "Travel & Adventure", 
+          scenarios: [ 
+            { situation: "Share a memorable travel story from a past vacation.", guidelines: ["Mention where you went and who you were with.", "Describe one specific interesting or funny event that happened.", "Explain how you felt about the experience."], answer: "A few years ago, I went to Thailand with my family. While we were visiting a temple, a monkey actually jumped on my dad's shoulder and stole his sunglasses! We were shocked but couldn't stop laughing. It was definitely a trip I will never forget." }, 
+            { situation: "Do you prefer traveling solo or with a group? Why?", guidelines: ["State your preference clearly.", "Give a reason related to freedom or safety.", "Mention a downside to the opposite choice."], answer: "I prefer traveling with a group of close friends. It's much safer, and we can share the costs of food and taxis. Traveling solo sounds very free, but I think I would get lonely having no one to share the memories with." },
+            { situation: "Describe your absolute dream vacation destination.", guidelines: ["Name the country or city.", "Mention what you would do there.", "Explain why this place appeals to you."], answer: "My dream destination is Iceland. I want to rent a car, drive around the island, and see the Northern Lights at night. I love cold weather and dramatic nature, so it seems like the perfect place for an adventure." },
+            { situation: "What is the worst thing that has happened to you while traveling?", guidelines: ["Briefly set the scene (where/when).", "Describe the problem (e.g., lost luggage, bad weather).", "Explain how you solved or survived it."], answer: "Once, when I flew to Japan, the airline lost my luggage for two days. I only had the clothes I was wearing! I had to go to a local store to buy basic shirts and socks until my bag finally arrived at the hotel." }
+          ] 
+        },
+        { 
+          name: "Tech & Social Media", 
+          scenarios: [ 
+            { situation: "What is your favorite app, and how does it impact your life?", guidelines: ["Name the app and its main function.", "Explain how often you use it.", "Discuss whether its impact is mostly positive or negative."], answer: "My favorite app is Instagram. I use it daily to see what my friends are doing and to look at funny videos. While it helps me stay connected, it can have a negative impact because I sometimes waste hours scrolling without realizing it." }, 
+            { situation: "What are the pros and cons of teenagers using social media?", guidelines: ["Mention one clear benefit (pro).", "Mention one clear negative effect (con).", "Give a concluding thought on balance."], answer: "A major pro of social media is that teenagers can easily make friends and join communities with similar interests. However, a big con is cyberbullying and comparing themselves to unrealistic photos online. I think it's okay to use, but screen time needs to be balanced." },
+            { situation: "How has technology changed the way we learn?", guidelines: ["Compare how learning was in the past to now.", "Mention a specific tech tool (e.g., tablets, AI).", "State your opinion on this change."], answer: "In the past, students only learned from textbooks and chalkboards. Now, we use tablets, watch educational videos online, and even use AI to help explain complex math problems. I think this makes learning much faster and more interactive." },
+            { situation: "Do you think people spend too much time on their phones today?", guidelines: ["State your opinion directly.", "Give an example from daily life (e.g., on the MRT, at dinner).", "Suggest a way people could reduce their screen time."], answer: "Yes, I definitely think people are addicted to their phones. If you look around on the MRT, nobody is talking; everyone is just staring at a screen. I think people should try turning off notifications when they are eating dinner with their families." }
+          ] 
+        },
+        { 
+          name: "Culture & Traditions", 
+          scenarios: [ 
+            { situation: "Explain a traditional custom from your country.", guidelines: ["Name the custom or action.", "Explain the meaning behind it.", "Say when or where it usually happens."], answer: "In Taiwan, a common custom is giving red envelopes during the Lunar New Year. Adults give them to children, and the money inside represents good luck and blessings for the coming year. It's always a very happy moment for the kids!" },
+            { situation: "Compare a cultural norm in your country to one in Western countries.", guidelines: ["Identify the specific cultural difference.", "Describe how it works in your country.", "Contrast it with the Western approach."], answer: "A big cultural difference is taking off shoes indoors. In Taiwan, it is extremely rude to wear outdoor shoes inside someone's home, so we always switch to slippers. In many Western countries, people often leave their shoes on when walking around the house." },
+            { situation: "Describe a national holiday and how people celebrate it.", guidelines: ["Name the holiday and the time of year it occurs.", "Describe the special food eaten.", "Mention a specific activity people do."], answer: "The Dragon Boat Festival happens in early summer. People celebrate by eating Zongzi, which are sticky rice dumplings wrapped in bamboo leaves. Many cities also hold exciting boat races on the river, where teams paddle to the beat of a loud drum." },
+            { situation: "How important is traditional food to your culture?", guidelines: ["State your opinion on its importance.", "Give an example of a traditional dish.", "Explain how food brings people together."], answer: "Traditional food is incredibly important to our culture. Dishes like beef noodle soup or hot pot are more than just meals; they are ways to connect. When families gather around a big hot pot on a cold winter night, it creates a feeling of warmth and unity." }
+          ] 
+        },
+        { 
+          name: "Movies, Books, & Music", 
+          scenarios: [ 
+            { situation: "Recommend a great movie you have watched recently.", guidelines: ["State the movie title and genre.", "Briefly summarize the plot without spoiling the ending.", "Explain why the other person should watch it."], answer: "I highly recommend the sci-fi movie 'Dune'. It's about a young man who must travel to a dangerous desert planet to protect his family and his people. The visual effects are absolutely stunning, and the music makes it feel epic." },
+            { situation: "Do you prefer reading the book or watching the movie adaptation?", guidelines: ["State your preference.", "Give a reason related to imagination or visual experience.", "Acknowledge the benefits of the other medium."], answer: "I almost always prefer reading the book first. Books let me use my own imagination to picture the characters, and they usually contain much more detail. However, movies are great when you want to relax and enjoy amazing visual effects." },
+            { situation: "Describe your taste in music and how it affects your mood.", guidelines: ["Name your favorite music genre or artist.", "Explain when you usually listen to it.", "Describe how the music makes you feel."], answer: "My favorite genre is upbeat pop music. I usually listen to it in the morning when I am getting ready for school or exercising. It gives me a lot of energy and immediately puts me in a positive, happy mood for the rest of the day." },
+            { situation: "Have you ever been to a live concert? Describe the experience.", guidelines: ["Mention who you saw and where.", "Describe the atmosphere (crowd, noise, lights).", "Explain what you enjoyed most about it."], answer: "Yes, I went to a Coldplay concert last year in a huge stadium. The atmosphere was incredible—thousands of people were singing along, and everyone had glowing wristbands that changed color to the beat. Hearing the songs live felt so much more powerful than listening on my phone." }
+          ] 
+        },
+        { 
+          name: "Nature & Environment", 
+          scenarios: [ 
+            { situation: "What is the biggest environmental problem in your city?", guidelines: ["Identify the specific problem (e.g., air pollution, plastic waste).", "Explain what causes it.", "Suggest one possible solution."], answer: "I think the biggest problem in our city is air pollution from millions of scooters and cars. It often makes the sky look gray and can cause breathing problems. A good solution would be to encourage more people to buy electric scooters or use the MRT." },
+            { situation: "What personal habits do you have to help the environment?", guidelines: ["Mention a specific daily action you take.", "Explain how this action reduces waste or saves energy.", "State why you think it's important."], answer: "I always bring my own reusable cup when I buy drinks, and I carry a cloth shopping bag. This reduces the amount of single-use plastic that ends up in the ocean. It's a small habit, but if everyone does it, it can make a huge difference." },
+            { situation: "Do you think climate change is getting worse? Why?", guidelines: ["State your opinion clearly.", "Give an example of changing weather patterns you have noticed.", "Express a hope or concern for the future."], answer: "Yes, I believe climate change is getting much worse. The summers in Taiwan are becoming hotter and longer every year, and the rain storms are much more sudden and violent. I am worried about what the planet will look like in 50 years if we don't act now." },
+            { situation: "Would you ever volunteer to clean up a beach or park?", guidelines: ["Say yes or no.", "Explain your reasoning.", "Describe what the experience might be like."], answer: "Yes, I would definitely volunteer for a beach cleanup. I think it is our responsibility to take care of nature. Picking up trash in the hot sun sounds tiring, but it would feel very rewarding to see a clean beach at the end of the day." }
+          ] 
+        },
+        { 
+          name: "Education & Work", 
+          scenarios: [ 
+            { situation: "What are your future study or career goals?", guidelines: ["State what you want to study or the job you want.", "Explain what inspired you to choose this path.", "Mention one step you need to take to achieve it."], answer: "My goal is to study computer science and become a software engineer. I've always loved playing video games and figuring out how apps work. To achieve this, I need to focus heavily on my math classes and start learning Python on my own." },
+            { situation: "What are the pros and cons of working remotely (from home)?", guidelines: ["Give one major advantage (pro).", "Give one major disadvantage (con).", "State whether you would prefer to work remotely or in an office."], answer: "The biggest pro of working from home is saving time and money on commuting. However, the con is that it can be lonely, and it's hard to separate your work life from your home life. Personally, I would prefer a hybrid schedule, going to the office a few days a week." },
+            { situation: "Do you think getting good grades is the only way to be successful?", guidelines: ["State your opinion directly.", "Provide an example of a skill that grades don't measure.", "Redefine what success means to you in this context."], answer: "No, I don't think good grades are the only way to be successful. Grades don't measure creativity, leadership, or how well you work with other people. Real success comes from finding something you are passionate about and working hard at it, even if you aren't the top student." },
+            { situation: "If you could do any job in the world, what would it be?", guidelines: ["Name a dream job (realistic or fantasy).", "Explain what the daily tasks would be.", "Describe why it would make you happy."], answer: "If I could do anything, I would be a travel photographer for a magazine like National Geographic. My daily job would be exploring new countries and taking pictures of wildlife and cultures. It would make me so happy because I love art and experiencing new things." }
+          ] 
+        },
+        { 
+          name: "Current Events & News", 
+          scenarios: [ 
+            { situation: "Discuss a recent positive news story you heard about.", guidelines: ["Briefly summarize the news story.", "Explain why it is considered positive.", "Describe how it made you feel."], answer: "Recently, I read that a group of scientists invented a new machine that can clean tons of plastic out of the ocean very quickly. This is highly positive because ocean pollution is a huge crisis. Hearing this news made me feel hopeful for the future of marine life." },
+            { situation: "How do you usually get your daily news?", guidelines: ["Mention the platform or medium (e.g., social media, TV, newspaper).", "Explain why you prefer this method.", "Acknowledge a potential problem with your method (e.g., fake news)."], answer: "I usually get my news by reading short articles on social media platforms like X or Instagram. It's very fast and fits into my busy schedule. However, I know I have to be careful because fake news spreads very easily on social media." },
+            { situation: "Why is it important to pay attention to global events?", guidelines: ["State a reason related to the economy or environment.", "Give an example of how a distant event affects you locally.", "Conclude with a thought on being a global citizen."], answer: "It's vital to pay attention to global events because the world is deeply connected. For example, a conflict or a natural disaster in another country can increase the price of oil or food right here in Taiwan. Staying informed helps us become responsible global citizens." },
+            { situation: "Do you think the news focuses too much on negative stories?", guidelines: ["Give your opinion.", "Explain why you think the media does this.", "Suggest what you would like to see more of."], answer: "Yes, I feel like the news is 90% negative, focusing on accidents, wars, and politics. I think the media does this because shocking stories get more clicks and views. I really wish they would dedicate a section every day just to highlighting people helping each other." }
+          ] 
+        },
+        { 
+          name: "Society & Social Issues", 
+          scenarios: [ 
+            { situation: "What are the differences between living in a big city versus a rural area?", guidelines: ["Mention an advantage of city living.", "Mention an advantage of rural living.", "State which environment you prefer to live in."], answer: "Big cities offer amazing public transportation, great hospitals, and diverse entertainment. On the other hand, rural areas have clean air, bigger houses, and a much more peaceful lifestyle. Right now, I prefer the exciting energy of the big city." },
+            { situation: "How is your generation different from your parents' generation?", guidelines: ["Identify a major difference (e.g., technology, values).", "Provide an example of how your generation acts.", "Provide an example of how your parents' generation acts."], answer: "The biggest difference is how we use technology and communicate. My generation prefers texting, making short videos, and working flexible jobs. My parents' generation values face-to-face phone calls, stability, and staying at the same company for 20 years." },
+            { situation: "What is an important social issue in your country right now?", guidelines: ["Identify the issue (e.g., aging population, housing prices).", "Explain why it is a problem.", "Suggest a way society could improve the situation."], answer: "A major issue in Taiwan is the incredibly high cost of housing compared to average salaries. It's a huge problem because young people feel they can never afford to buy a home or start a family. The government really needs to build more affordable social housing." },
+            { situation: "Do you think healthcare should be free for everyone?", guidelines: ["State your opinion clearly.", "Give a reason related to human rights or equality.", "Acknowledge how it might be paid for (e.g., taxes)."], answer: "Yes, I believe basic healthcare is a human right and should be accessible to everyone, regardless of their wealth. No one should go bankrupt just because they get sick. Of course, this means we all have to pay slightly higher taxes to support the system, which I think is fair." }
+          ] 
+        },
+        { 
+          name: "Science & Innovation", 
+          scenarios: [ 
+            { situation: "How do you think Artificial Intelligence (AI) will change our lives in the next 10 years?", guidelines: ["Predict one major change in the workplace.", "Predict one change in daily home life.", "State if you feel positive or anxious about this."], answer: "In the workplace, I think AI will take over most repetitive tasks, forcing humans to focus on creative problem-solving. At home, smart assistants will likely cook and clean for us. I feel mostly positive, but a little anxious about people losing their jobs." },
+            { situation: "Would you ever want to travel to space as a tourist?", guidelines: ["Say yes or no.", "Explain your reasoning (e.g., curiosity, fear).", "Mention what you would want to see up there."], answer: "I would absolutely love to travel to space. I think experiencing zero gravity and looking down at the Earth from orbit would be the most profound experience of my life. I'm not really scared; I think the science is advancing fast enough to be safe." },
+            { situation: "What future technology do you wish existed right now?", guidelines: ["Name a fictional or developing technology.", "Explain what problem it would solve.", "Describe how you would use it daily."], answer: "I wish teleportation machines existed right now. It would completely solve the problem of traffic jams and the carbon emissions from airplanes. I would use it to travel to Paris for breakfast and be back in Taiwan for school by 8 a.m." },
+            { situation: "Discuss an innovation that could help stop climate change.", guidelines: ["Name the innovation (e.g., lab-grown meat, better solar panels).", "Explain how it works briefly.", "Discuss its potential impact on the planet."], answer: "I think lab-grown meat is a massive innovation for the environment. It allows us to eat real meat without needing huge farms that cut down forests and produce methane gas. If it becomes cheap, it could drastically reduce our global carbon footprint." }
+          ] 
+        },
+        { 
+          name: "Art & Culture", 
+          scenarios: [ 
+            { situation: "What role does art (painting, music, cinema) play in society?", guidelines: ["State why art is important beyond just looking nice.", "Give an example of how art affects emotions or ideas.", "Conclude with your personal view on art."], answer: "Art plays a crucial role in society because it allows people to express complex emotions and challenge traditional ideas. For example, a powerful movie can change how people view a historical event. To me, a world without art and music would be incredibly depressing." },
+            { situation: "Do you think modern art is harder to understand than classical art?", guidelines: ["Give your opinion.", "Describe a characteristic of classical art.", "Describe a characteristic of modern art."], answer: "Yes, I find modern art much harder to understand. Classical art usually depicts clear, recognizable things like people or landscapes, so you know exactly what you are looking at. Modern art often uses abstract shapes or weird concepts that require the artist to explain the meaning." },
+            { situation: "How has streaming changed the music industry?", guidelines: ["Mention how people used to listen to music.", "Explain the current streaming model (Spotify, Apple Music).", "Discuss a positive or negative result for artists."], answer: "We used to buy physical CDs, which meant you only listened to a few artists. Now, streaming platforms give us access to millions of songs for a small monthly fee. This is great for listeners, but it can be negative for smaller artists who make very little money per stream." },
+            { situation: "If you could learn any artistic skill perfectly, what would it be?", guidelines: ["Name the skill (e.g., playing violin, sculpting, directing).", "Explain why you admire this skill.", "Describe what you would create first."], answer: "If I could master any skill, it would be 3D digital animation. I really admire how animators can create entire living, breathing worlds from scratch. The first thing I would create is a short film about a futuristic cyberpunk city." }
+          ] 
+        },
+        { 
+          name: "Personal Values & Philosophy", 
+          scenarios: [ 
+            { situation: "How do you define 'success' in life?", guidelines: ["State what success means to you personally.", "Contrast your definition with a common societal view.", "Give an example of a successful person by your standards."], answer: "To me, success simply means being happy, healthy, and surrounded by people you love. Society often says success is having a million dollars and a luxury car. By my standards, my grandfather is highly successful because he lived a peaceful life and was loved by everyone in his community." },
+            { situation: "Can money buy happiness? Explain your thoughts.", guidelines: ["State your stance (yes, no, or partially).", "Explain how money solves basic problems.", "Explain what money cannot buy."], answer: "I think money can buy happiness up to a certain point. Having enough money removes the stress of paying rent and buying food, which makes you much happier. However, once you are comfortable, billions of dollars cannot buy you true love or genuine health." },
+            { situation: "If you had to choose between a high-paying, stressful job or a low-paying, relaxing job, which would you pick?", guidelines: ["State your choice clearly.", "Explain the main reason for your choice.", "Discuss how it would affect your lifestyle."], answer: "I would definitely choose the lower-paying, relaxing job. Mental health is much more important to me than buying expensive things. With a relaxing job, I would have the time and energy to pursue my hobbies, spend time with my family, and actually enjoy my weekends." },
+            { situation: "Who is your biggest role model, and what have you learned from them?", guidelines: ["Name the person (famous or personal).", "Describe a specific quality you admire in them.", "Explain how you try to apply that quality in your life."], answer: "My biggest role model is my older sister. I admire her incredible resilience; whenever she fails at something, she never gives up and just tries a different approach. I try to apply this by not getting too frustrated when I do poorly on a difficult test, but rather studying harder for the next one." }
+          ] 
+        }
+      ]
+    };
+
+    let currentLevel = 'basic';
+    let currentPhase = 1;
+    let draggedItem = null;
+    const GRID_SIZE = 48;
+    
+    let currentVocabTest = {};
+    let currentReadingText = "";
+    let currentSpeakingTask = {};
+
+    const boxGrid = document.getElementById('box-grid');
+    const resultArea = document.getElementById('result-area');
+    const nextPhaseBtn = document.getElementById('next-phase-btn');
+    
+    const phaseTitle = document.getElementById('phase-title');
+    const phaseIndicator = document.getElementById('phase-indicator');
+    const phase1Content = document.getElementById('phase-1-content');
+    const phase2Content = document.getElementById('phase-2-content');
+    const phase3Content = document.getElementById('phase-3-content');
+
+    async function init() {
+      await loadExternalVocabulary();
+      
+      document.getElementById('btn-basic').addEventListener('click', () => setLevel('basic'));
+      document.getElementById('btn-inter').addEventListener('click', () => setLevel('intermediate'));
+      nextPhaseBtn.addEventListener('click', handleNextPhase);
+      
+      document.getElementById('answer-btn').addEventListener('click', toggleAnswer);
+      document.getElementById('spin-btn').addEventListener('click', handleSpinAgain);
+
+      setLevel('basic');
+    }
+
+    async function loadExternalVocabulary() {
+      try {
+        const response = await fetch('vocab.md');
+        if (!response.ok) throw new Error("File not found");
+        const text = await response.text();
+        
+        const lines = text.split('\n');
+        const parsedDB = [];
+        let tempWord = "";
+        
+        lines.forEach(line => {
+          if (line.includes("Word:")) {
+            tempWord = line.split("Word:")[1].trim();
+          } else if (line.includes("Sentence:") && tempWord !== "") {
+            const sentence = line.split("Sentence:")[1].trim();
+            parsedDB.push({ word: tempWord, sentence: sentence });
+            tempWord = ""; 
+          }
+        });
+
+        if (parsedDB.length >= 6) {
+          vocabDB = parsedDB; 
+        }
+      } catch (error) {
+        console.log("Could not fetch vocab.md, using internal fallback database.");
+      }
+    }
+
+    function setLevel(level) {
+      currentLevel = level;
+      const btnBasic = document.getElementById('btn-basic');
+      const btnInter = document.getElementById('btn-inter');
+      const badgeDisplay = document.getElementById('badge-display');
+      
+      if (level === 'basic') {
+        btnBasic.classList.add('active');
+        btnInter.classList.remove('active');
+        badgeDisplay.textContent = "Level 1: Beginner";
+        badgeDisplay.style.background = "var(--secondary)";
+      } else {
+        btnInter.classList.add('active');
+        btnBasic.classList.remove('active');
+        badgeDisplay.textContent = "Level 2: Intermediate";
+        badgeDisplay.style.background = "var(--primary-dark)";
+      }
+
+      resultArea.classList.add('hidden');
+      boxGrid.innerHTML = '';
+      for (let i = 0; i < GRID_SIZE; i++) {
+        const box = document.createElement('div');
+        box.className = 'number-box';
+        box.textContent = i + 1;
+        box.addEventListener('click', () => startTestForStudent(box));
+        boxGrid.appendChild(box);
+      }
+    }
+
+    function startTestForStudent(box) {
+      if (box.classList.contains('picked')) return;
+      box.classList.add('picked');
+
+      generatePhase1Data();
+      generatePhase2Data();
+      generatePhase3Data();
+
+      currentPhase = 1;
+      updateUIForPhase();
+      resultArea.classList.remove('hidden');
+      resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function generatePhase1Data() {
+      const shuffled = [...vocabDB].sort(() => 0.5 - Math.random());
+      const selectedQuestions = shuffled.slice(0, 4);
+      const distractors = shuffled.slice(4, 6).map(q => q.word);
+      
+      const wordOptions = [...selectedQuestions.map(q => q.word), ...distractors].sort(() => 0.5 - Math.random());
+      
+      currentVocabTest = { questions: selectedQuestions, options: wordOptions };
+    }
+
+    function generatePhase2Data() {
+      const texts = readingDB[currentLevel];
+      currentReadingText = texts[Math.floor(Math.random() * texts.length)];
+    }
+
+    function generatePhase3Data() {
+      const categories = speakingDB[currentLevel];
+      const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+      const randomScenario = randomCategory.scenarios[Math.floor(Math.random() * randomCategory.scenarios.length)];
+      
+      currentSpeakingTask = { categoryName: randomCategory.name, ...randomScenario };
+    }
+
+    function updateUIForPhase() {
+      phase1Content.classList.add('hidden');
+      phase2Content.classList.add('hidden');
+      phase3Content.classList.add('hidden');
+      
+      phaseIndicator.textContent = `${currentPhase} / 3`;
+
+      if (currentPhase === 1) {
+        phaseTitle.textContent = "Phase 1: Vocabulary";
+        phase1Content.classList.remove('hidden');
+        renderPhase1();
+        nextPhaseBtn.textContent = "NEXT PHASE (READING)";
+        nextPhaseBtn.style.display = "block";
+      } 
+      else if (currentPhase === 2) {
+        phaseTitle.textContent = "Phase 2: Reading";
+        phase2Content.classList.remove('hidden');
+        document.getElementById('reading-passage').textContent = currentReadingText;
+        nextPhaseBtn.textContent = "NEXT PHASE (SPEAKING)";
+      } 
+      else if (currentPhase === 3) {
+        phaseTitle.textContent = "Phase 3: Speaking";
+        phase3Content.classList.remove('hidden');
+        renderPhase3();
+        nextPhaseBtn.style.display = "none"; 
+      }
+    }
+
+    function renderPhase1() {
+      const bank = document.getElementById('word-bank');
+      const list = document.getElementById('sentence-list');
+      bank.innerHTML = '';
+      list.innerHTML = '';
+      draggedItem = null;
+
+      currentVocabTest.options.forEach(word => {
+        const span = document.createElement('span');
+        span.className = 'word-badge';
+        span.textContent = word;
+        span.draggable = true;
+        
+        span.addEventListener('dragstart', function(e) {
+          draggedItem = this;
+          setTimeout(() => this.classList.add('dragging'), 0);
+        });
+        
+        span.addEventListener('dragend', function() {
+          this.classList.remove('dragging');
+          draggedItem = null;
+        });
+        
+        bank.appendChild(span);
+      });
+
+      bank.addEventListener('dragover', e => e.preventDefault());
+      bank.addEventListener('drop', function(e) {
+        if (draggedItem) {
+          this.appendChild(draggedItem);
+        }
+      });
+
+      currentVocabTest.questions.forEach((q, index) => {
+        const div = document.createElement('div');
+        div.className = 'sentence-item';
+        
+        div.innerHTML = `<strong>${index + 1}.</strong> ${q.sentence.replace('_____', `<span class="drop-zone" data-answer="${q.word}"></span>`)}`;
+        
+        const dropZone = div.querySelector('.drop-zone');
+        
+        dropZone.addEventListener('dragover', e => {
+          e.preventDefault();
+        });
+        
+        dropZone.addEventListener('dragenter', function(e) {
+          e.preventDefault();
+          this.classList.add('over');
+        });
+        
+        dropZone.addEventListener('dragleave', function() {
+          this.classList.remove('over');
+        });
+        
+        dropZone.addEventListener('drop', function(e) {
+          this.classList.remove('over');
+          if (draggedItem) {
+            if (this.firstChild) {
+              bank.appendChild(this.firstChild);
+            }
+            this.appendChild(draggedItem);
+          }
+        });
+        
+        list.appendChild(div);
+      });
+    }
+
+    function renderPhase3() {
+      document.getElementById('scenario-topic').textContent = `Topic: ${currentSpeakingTask.categoryName}`;
+      document.getElementById('scenario-situation').textContent = currentSpeakingTask.situation;
+      document.getElementById('answer-box').textContent = currentSpeakingTask.answer;
+      
+      document.getElementById('answer-box').classList.add('hidden');
+      document.getElementById('answer-btn').textContent = "SHOW SAMPLE ANSWER";
+
+      const formulaContainer = document.getElementById('formula-container');
+      const guidelinesContainer = document.getElementById('guidelines-container');
+
+      if (currentLevel === 'basic') {
+        guidelinesContainer.classList.add('hidden');
+        formulaContainer.classList.remove('hidden');
+        document.getElementById('formula-text').innerHTML = currentSpeakingTask.template; 
+      } else {
+        formulaContainer.classList.add('hidden');
+        guidelinesContainer.classList.remove('hidden');
+        const list = document.getElementById('guidelines-list');
+        list.innerHTML = '';
+        currentSpeakingTask.guidelines.forEach(g => {
+          const li = document.createElement('li');
+          li.textContent = g;
+          list.appendChild(li);
+        });
+      }
+    }
+
+    function handleNextPhase() {
+      if (currentPhase < 3) {
+        currentPhase++;
+        updateUIForPhase();
+      }
+    }
+
+    function toggleAnswer() {
+      const box = document.getElementById('answer-box');
+      const btn = document.getElementById('answer-btn');
+      if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        btn.textContent = "HIDE SAMPLE ANSWER";
+      } else {
+        box.classList.add('hidden');
+        btn.textContent = "SHOW SAMPLE ANSWER";
+      }
+    }
+
+    function handleSpinAgain() {
+      generatePhase3Data();
+      renderPhase3();
+    }
+
+    init();
+  </script>
+</body>
+</html>
