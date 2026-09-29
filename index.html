@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Speaking Test</title>
+  <title>ESL 3-Phase Speaking Test</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
@@ -498,7 +498,7 @@
         "My name is Sarah. I live in a big city with my family. Every morning, I wake up at 7:00 AM and eat toast for breakfast. After breakfast, I take the bus to school. My favorite subject is English because I like learning new words. On weekends, I usually go to the park with my friends and we play soccer.",
         "Tom has a pet dog named Max. Max is very energetic and loves to run outside. Yesterday, Tom threw a ball, and Max ran very fast to catch it. They played in the garden for two hours. When they went back inside, Max was very tired and fell asleep on the rug.",
         "Taiwan is a beautiful island. It is famous for its night markets and delicious street food. Many tourists visit Taipei 101, which used to be the tallest building in the world. The weather is usually warm, but it rains a lot during the summer.",
-        "Every Sunday, my family goes to the local market. We buy fresh vegetables, fruits, and fish. After shopping, we have lunch at a small restaurant nearby. I love spending time with my family and trying new foods.",
+        "Every Sunday, my family goes to the local market. We buy fresh vegetables, fruits, and fish. After shopping, we have lunch at a small restaurant nearby. I love spending time with my family and trying new food.",
         "Last summer, I went to the beach with my friends. We built sandcastles and swam in the sea. The water was cool and refreshing. In the evening, we watched the sunset and took many photos. It was a fun and memorable day.",
         "I enjoy reading books in my free time. My favorite genre is mystery because I like solving puzzles. Last week, I finished a book about a detective who solved a big case. I was very excited to find out who the culprit was at the end.",
         "My school has a big library with many books. I often go there to study and read. The library is quiet, and it has comfortable chairs. I like to borrow books about science and history. It helps me learn new things and improve my knowledge.",
@@ -506,10 +506,6 @@
         "During the holidays, I like to visit my grandparents. They live in a small village. I help them in the garden and listen to their stories. They tell me about their childhood and how life was different back then. I enjoy spending time with them and learning from their experiences."
       ],
       intermediate: [
-        "In recent years, remote work has become a significant trend around the globe. Many companies have realized that employees can be just as productive working from home as they are in a traditional office. While this offers greater flexibility and eliminates long commutes, some workers struggle with feelings of isolation and the blurring of boundaries between their professional and personal lives.",
-        "The rapid advancement of artificial intelligence is reshaping multiple industries. From healthcare, where AI assists in diagnosing diseases, to transportation with the development of self-driving cars, the applications are vast. However, this technological leap also raises ethical concerns regarding data privacy and the potential displacement of human jobs.",
-        "Environmental conservation is more critical now than ever before. With global temperatures rising and extreme weather events becoming more frequent, nations must collaborate to reduce carbon emissions. Transitioning to renewable energy sources, such as solar and wind power, alongside sustainable agricultural practices, are essential steps toward securing a livable planet for future generations.",
-        "The importance of mental health awareness has gained recognition in recent years. Societal pressures, economic challenges, and the fast-paced nature of modern life contribute to stress and anxiety. Promoting open conversations about mental well-being, providing access to counseling services, and implementing workplace wellness programs are crucial for fostering a supportive environment.",
         "The Tortoise and the Hare: A boastful hare repeatedly mocks a slow-moving tortoise, who eventually challenges him to a race. Supremely confident in his natural speed, the hare sprints ahead and decides to take a nap midway through the course, only to wake up and discover that the tortoise's relentless, plodding pace has crossed the finish line first. The story teaches that slow and steady consistency ultimately triumphs over erratic arrogance.",
         "The Boy Who Cried Wolf: A bored shepherd boy entertains himself by falsely screaming that a wolf is attacking his flock, sending the panicked villagers rushing to his aid. After repeating this trick multiple times, a real wolf finally appears, but the villagers ignore the boy's desperate cries, assuming it is just another prank. The tragic outcome proves that liars are not believed, even when they finally tell the truth.",
         "The Lion and the Mouse: A mighty lion catches a tiny mouse but decides to spare its life when the small creature promises to one day repay the favor. Later, the lion becomes severely entangled in a hunter's net, and the grateful mouse hears his roars, scampering over to gnaw through the thick ropes and set the beast free. This proves that no act of kindness is ever wasted and that even the smallest individuals can aid the strong.",
@@ -634,7 +630,7 @@
           ] 
         }
       ],
-     intermediate:[
+      intermediate: [
         { 
           name: "Travel & Adventure", 
           scenarios: [ 
@@ -952,6 +948,10 @@
               bank.appendChild(this.firstChild);
             }
             this.appendChild(draggedItem);
+            
+            // Reset validation styles on new drop
+            this.style.borderColor = '';
+            this.style.backgroundColor = '';
           }
         });
         
@@ -988,6 +988,30 @@
     }
 
     function handleNextPhase() {
+      if (currentPhase === 1) {
+        let allCorrect = true;
+        const dropZones = document.querySelectorAll('.drop-zone');
+        
+        dropZones.forEach(zone => {
+          const correctAnswer = zone.getAttribute('data-answer');
+          const droppedBadge = zone.querySelector('.word-badge');
+          
+          if (!droppedBadge || droppedBadge.textContent !== correctAnswer) {
+            allCorrect = false;
+            zone.style.borderColor = 'var(--secondary-dark)';
+            zone.style.backgroundColor = 'rgba(229, 80, 57, 0.1)';
+          } else {
+            zone.style.borderColor = 'var(--accent)';
+            zone.style.backgroundColor = 'rgba(120, 224, 143, 0.2)';
+          }
+        });
+
+        if (!allCorrect) {
+          alert("Please match all the correct words before moving to the reading phase!");
+          return; 
+        }
+      }
+
       if (currentPhase < 3) {
         currentPhase++;
         updateUIForPhase();
